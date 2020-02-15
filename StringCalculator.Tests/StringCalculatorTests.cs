@@ -17,6 +17,10 @@ namespace StringCalculator
       return new StringCalculator();
     }
 
+    //I choose to keep the separate unit tests even though they all are performing the same logic.
+    //I did this because the name of the tests are giving me context to the data and logic that is being exercised, 
+    //so this is actually giving me a lot more information than just running all test cases through one generically named test method.
+
 
     [TestCase("", 0)]
     [TestCase("52",52)]
@@ -30,9 +34,6 @@ namespace StringCalculator
       Assert.That(actual, Is.EqualTo(expected));
     }
 
-
-    //At step 3, I chose to do this as a separate test cases mainly to call out the different delimiters,
-    //this may refactor into the above test since it is currently the same code.
     [TestCase("1\n2", 3)]
     [TestCase("1\n2,3", 6)]
     [TestCase("1\n", 1)]
@@ -64,6 +65,20 @@ namespace StringCalculator
       var ex = Assert.Throws<InvalidOperationException>(() => sut.Add(numbers));
       Assert.That(ex.Message.Split(':')[1], Is.EqualTo(listOfNegativeNumbers));
     }
+
+    [TestCase("1000,1",1001)]
+    [TestCase("1001,1",1)]
+    [TestCase("1,2\n3,5000",6)]
+    [TestCase("//;\n3000;2;1", 3)]  
+    [TestCase("1000",1000)]
+    [TestCase("3000",0)]
+    public void Add_NumbersGreaterThan1000_IgnoreNumbersGreaterThan1000(string numbers, int expected)
+    {
+      var sut = GetObject();
+      var actual = sut.Add(numbers);
+      Assert.That(actual, Is.EqualTo(expected));      
+    }
+
 
   }
 }

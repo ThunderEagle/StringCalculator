@@ -31,20 +31,23 @@ namespace StringCalculator
     {
       var parsedNumbers = new List<int>();
       var negativeNumbers = new List<int>();
-      foreach(var number in numbers)
+      foreach (var number in numbers)
       {
-        if(int.TryParse(number, out var x))
+        if (int.TryParse(number, out var x))
         {
-          if(x < 0)
+          if (x < 0)
           {
             negativeNumbers.Add(x);
           }
-          parsedNumbers.Add(x);
+          if (x <= 1000)
+          {
+            parsedNumbers.Add(x);
+          }
         }
       }
-      if(negativeNumbers.Any())
+      if (negativeNumbers.Any())
       {
-        throw new InvalidOperationException($"Negatives not allowed:{string.Join(',',negativeNumbers)}");
+        throw new InvalidOperationException($"Negatives not allowed:{string.Join(',', negativeNumbers)}");
       }
       return parsedNumbers;
     }
