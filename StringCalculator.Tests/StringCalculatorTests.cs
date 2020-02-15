@@ -31,5 +31,19 @@ namespace StringCalculator
     }
 
 
+    //At step 3, I chose to do this as a separate test cases mainly to call out the different delimiters,
+    //this may refactor into the above test since it is currently the same code.
+    [TestCase("1\n2", 3)]
+    [TestCase("1\n2,3", 6)]
+    [TestCase("1\n", 1)]
+    [TestCase("15,",15)]
+    public void Add_NewLineAndCommaDelimiters_ReturnsCorrectSum(string numbers,int expected)
+    {
+      var sut = GetObject();
+      var actual = sut.Add(numbers);
+      Assert.AreEqual(expected,actual);
+    }
+
+
   }
 }
