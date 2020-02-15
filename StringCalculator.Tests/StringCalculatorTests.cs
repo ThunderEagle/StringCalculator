@@ -79,6 +79,14 @@ namespace StringCalculator
       Assert.That(actual, Is.EqualTo(expected));      
     }
 
+    [TestCase("//[|||]\n3", 3)]
+    [TestCase("//[|||]\n1|||2|||3", 6)]
+    public void Add_AnyLengthDelimiter_ReturnsCorrectSum(string numbers, int expected)
+    {
+      var sut = GetObject();
+      var actual = sut.Add(numbers);
+      Assert.That(actual, Is.EqualTo(expected));      
+    }
 
   }
 }

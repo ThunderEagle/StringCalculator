@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 
 namespace StringCalculator
 {
   public class StringCalculator : IStringCalculator
   {
-    private readonly char[] _defaultDelimiters = new[] { ',', '\n' };
+    private readonly string[] _defaultDelimiters = new[] { ",", "\n" };
 
     public int Add(string numbers)
     {
@@ -16,7 +16,7 @@ namespace StringCalculator
       if (!string.IsNullOrEmpty(numbers))
       {
         var delimiters = (numbers.StartsWith("//")) ? GetDelimiter(numbers, out numbers) : _defaultDelimiters;
-        var numbersToAdd = numbers.Split(delimiters);
+        var numbersToAdd = numbers.Split(delimiters, StringSplitOptions.None);
         var parsedNumbers = ParseNumbers(numbersToAdd);
         foreach (var number in parsedNumbers)
         {
@@ -52,13 +52,16 @@ namespace StringCalculator
       return parsedNumbers;
     }
 
-    private char[] GetDelimiter(string command, out string numbers)
+    private string[] GetDelimiter(string command, out string numbers)
     {
       var lines = command.Split('\n');
       if (lines.Length == 2)
       {
         numbers = lines[1];
-        return new[] { lines[0][2] };
+        var delimiterLine = lines[0].Substring(2);
+        var match = Regex.Match(delimiterLine, "^\\[(.+)\\]$");
+        var delimiter = (match.Success) ? match.Groups[1].Value : delimiterLine;
+        return new[] { delimiter };
       }
       throw new InvalidOperationException("Improperly formatted input");
     }
