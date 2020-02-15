@@ -95,5 +95,15 @@ namespace StringCalculator
       var actual = sut.Add(numbers);
       Assert.That(actual, Is.EqualTo(expected));      
     }
+
+    [TestCase("//[||][%%%][#][,,]\n10,,1||2%%%3#4", 20)]
+    public void Add_MultipleVariedLengthDelimiters_ReturnsCorrectSum(string numbers, int expected)
+    {
+      var sut = GetObject();
+      var actual = sut.Add(numbers);
+      Assert.That(actual, Is.EqualTo(expected));      
+    }
+
+
   }
 }

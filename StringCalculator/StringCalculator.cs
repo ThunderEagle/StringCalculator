@@ -59,14 +59,12 @@ namespace StringCalculator
       {
         numbers = lines[1];
         var delimiterLine = lines[0].Substring(2);
-        var matchMultiDelimiters = Regex.Matches(delimiterLine, "\\[(.?)\\]");
-        if(matchMultiDelimiters.Count>0)
+        var matchMultiDelimiters = Regex.Matches(delimiterLine, "\\[(.+?)\\]");
+        if (matchMultiDelimiters.Count > 0)
         {
           return matchMultiDelimiters.Select(m => m.Groups[1].Value).ToArray();
         }
-        var matchMultiLengthDelimiter = Regex.Match(delimiterLine, "^\\[(.+)\\]$");
-        var delimiter = matchMultiLengthDelimiter.Success ? matchMultiLengthDelimiter.Groups[1].Value : delimiterLine;
-        return new[] { delimiter };
+        return new[] { delimiterLine };
       }
       throw new InvalidOperationException("Improperly formatted input");
     }
