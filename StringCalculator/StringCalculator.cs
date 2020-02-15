@@ -18,10 +18,7 @@ namespace StringCalculator
         var delimiters = (numbers.StartsWith("//")) ? GetDelimiters(numbers, out numbers) : _defaultDelimiters;
         var numbersToAdd = numbers.Split(delimiters, StringSplitOptions.None);
         var parsedNumbers = ParseNumbers(numbersToAdd);
-        foreach (var number in parsedNumbers)
-        {
-          total += number;
-        }
+        total = parsedNumbers.Sum();
       }
       return total;
     }
