@@ -17,42 +17,17 @@ namespace StringCalculator
       return new StringCalculator();
     }
 
-    [Test]
-    public void Add_EmptyString_ReturnsZero()
-    {
-      var sut = GetObject();
-      var actual = sut.Add(string.Empty);
 
-      Assert.AreEqual(0, actual);
-    }
-
-    [Test]
-    public void Add_OneNumber_ReturnsNumber()
+    [TestCase("", 0)]
+    [TestCase("52",52)]
+    [TestCase("3,8", 11)]
+    [TestCase("1,2,3", 6)]
+    [TestCase("1,2,3,4", 10)]
+    public void Add_VaryingNumberOfNumbers_ReturnsCorrectSum(string numbers, int expected)
     {
-      var numbers = "3";
       var sut = GetObject();
       var actual = sut.Add(numbers);
-
-      Assert.AreEqual(3,actual);
-    }
-
-    [Test]
-    public void Add_TwoNumbers_ReturnsSum()
-    {
-      var numbers = "3,8";
-      var sut = GetObject();
-      var actual = sut.Add(numbers);
-      Assert.AreEqual(11,actual);
-
-    }
-
-    [Test]
-    public void Add_MoreThanTwoNumbers_ThrowException()
-    {
-      var numbers = "3,8,1";
-      var sut = GetObject();
-      Assert.Throws<InvalidOperationException>(() => sut.Add(numbers));
-
+      Assert.AreEqual(expected,actual);
     }
 
 
