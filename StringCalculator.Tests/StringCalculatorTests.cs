@@ -24,7 +24,37 @@ namespace StringCalculator
       var actual = sut.Add(string.Empty);
 
       Assert.AreEqual(0, actual);
+    }
+
+    [Test]
+    public void Add_OneNumber_ReturnsNumber()
+    {
+      var numbers = "3";
+      var sut = GetObject();
+      var actual = sut.Add(numbers);
+
+      Assert.AreEqual(3,actual);
+    }
+
+    [Test]
+    public void Add_TwoNumbers_ReturnsSum()
+    {
+      var numbers = "3,8";
+      var sut = GetObject();
+      var actual = sut.Add(numbers);
+      Assert.AreEqual(11,actual);
 
     }
+
+    [Test]
+    public void Add_MoreThanTwoNumbers_ThrowException()
+    {
+      var numbers = "3,8,1";
+      var sut = GetObject();
+      Assert.Throws<InvalidOperationException>(() => sut.Add(numbers));
+
+    }
+
+
   }
 }
