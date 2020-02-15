@@ -54,6 +54,27 @@ namespace StringCalculator
       Assert.AreEqual(expected,actual);
     }
 
+    [TestCase("-1,2")]
+    [TestCase("-1,2,-3")]
+    [TestCase("-2")]
+    [TestCase("//;\n-3;2;-1")]
+    public void Add_NegativeNumbers_ThrowException(string numbers)
+    {
+      var sut = GetObject();
+      Assert.Throws<InvalidOperationException>(() => sut.Add(numbers));
+    }
+
+
+    [TestCase("-1,2", "-1")]
+    [TestCase("-1,2,-3", "-1,-3")]
+    [TestCase("-2", "-2")]
+    [TestCase("//;\n-3;2;-1", "-3,-1")]  
+    public void Add_NegativeNumbers_ExceptionMessageContainsListOfAllNegativeNumbers(string numbers, string listOfNegativeNumbers)
+    {
+      var sut = GetObject();
+      var ex = Assert.Throws<InvalidOperationException>(() => sut.Add(numbers));
+      Assert.That(ex.Message.Split(':')[1], Is.EqualTo(listOfNegativeNumbers));
+    }
 
   }
 }

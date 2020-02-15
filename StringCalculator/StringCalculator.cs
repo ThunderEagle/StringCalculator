@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace StringCalculator
@@ -15,15 +17,36 @@ namespace StringCalculator
       {
         var delimiters = (numbers.StartsWith("//")) ? GetDelimiter(numbers, out numbers) : _defaultDelimiters;
         var numbersToAdd = numbers.Split(delimiters);
-        foreach (var number in numbersToAdd)
+        var parsedNumbers = ParseNumbers(numbersToAdd);
+        foreach (var number in parsedNumbers)
         {
-          if (int.TryParse(number, out var x))
-          {
-            total += x;
-          }
+          total += number;
         }
       }
       return total;
+    }
+
+
+    private IEnumerable<int> ParseNumbers(string[] numbers)
+    {
+      var parsedNumbers = new List<int>();
+      var negativeNumbers = new List<int>();
+      foreach(var number in numbers)
+      {
+        if(int.TryParse(number, out var x))
+        {
+          if(x < 0)
+          {
+            negativeNumbers.Add(x);
+          }
+          parsedNumbers.Add(x);
+        }
+      }
+      if(negativeNumbers.Any())
+      {
+        throw new InvalidOperationException($"Negatives not allowed:{string.Join(',',negativeNumbers)}");
+      }
+      return parsedNumbers;
     }
 
     private char[] GetDelimiter(string command, out string numbers)
