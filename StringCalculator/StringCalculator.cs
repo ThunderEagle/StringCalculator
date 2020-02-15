@@ -15,7 +15,7 @@ namespace StringCalculator
       var total = 0;
       if (!string.IsNullOrEmpty(numbers))
       {
-        var delimiters = (numbers.StartsWith("//")) ? GetDelimiter(numbers, out numbers) : _defaultDelimiters;
+        var delimiters = (numbers.StartsWith("//")) ? GetDelimiters(numbers, out numbers) : _defaultDelimiters;
         var numbersToAdd = numbers.Split(delimiters, StringSplitOptions.None);
         var parsedNumbers = ParseNumbers(numbersToAdd);
         foreach (var number in parsedNumbers)
@@ -52,15 +52,20 @@ namespace StringCalculator
       return parsedNumbers;
     }
 
-    private string[] GetDelimiter(string command, out string numbers)
+    private string[] GetDelimiters(string command, out string numbers)
     {
       var lines = command.Split('\n');
       if (lines.Length == 2)
       {
         numbers = lines[1];
         var delimiterLine = lines[0].Substring(2);
-        var match = Regex.Match(delimiterLine, "^\\[(.+)\\]$");
-        var delimiter = (match.Success) ? match.Groups[1].Value : delimiterLine;
+        var matchMultiDelimiters = Regex.Matches(delimiterLine, "\\[(.?)\\]");
+        if(matchMultiDelimiters.Count>0)
+        {
+          return matchMultiDelimiters.Select(m => m.Groups[1].Value).ToArray();
+        }
+        var matchMultiLengthDelimiter = Regex.Match(delimiterLine, "^\\[(.+)\\]$");
+        var delimiter = matchMultiLengthDelimiter.Success ? matchMultiLengthDelimiter.Groups[1].Value : delimiterLine;
         return new[] { delimiter };
       }
       throw new InvalidOperationException("Improperly formatted input");
