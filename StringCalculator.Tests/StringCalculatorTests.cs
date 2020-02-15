@@ -44,6 +44,16 @@ namespace StringCalculator
       Assert.AreEqual(expected,actual);
     }
 
+    [TestCase("//;\n3", 3)]
+    [TestCase("//;\n1;2;3", 6)]
+    [TestCase("//x\n1x2x3x4", 10)]
+    public void Add_CustomDelimiter_ReturnsCorrectSum(string numbers,int expected)
+    {
+      var sut = GetObject();
+      var actual = sut.Add(numbers);
+      Assert.AreEqual(expected,actual);
+    }
+
 
   }
 }
