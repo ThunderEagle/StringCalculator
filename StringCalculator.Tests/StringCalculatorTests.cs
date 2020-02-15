@@ -27,7 +27,7 @@ namespace StringCalculator
     {
       var sut = GetObject();
       var actual = sut.Add(numbers);
-      Assert.AreEqual(expected,actual);
+      Assert.That(actual, Is.EqualTo(expected));
     }
 
 
@@ -41,7 +41,7 @@ namespace StringCalculator
     {
       var sut = GetObject();
       var actual = sut.Add(numbers);
-      Assert.AreEqual(expected,actual);
+      Assert.That(actual, Is.EqualTo(expected));
     }
 
     [TestCase("//;\n3", 3)]
@@ -51,19 +51,8 @@ namespace StringCalculator
     {
       var sut = GetObject();
       var actual = sut.Add(numbers);
-      Assert.AreEqual(expected,actual);
+      Assert.That(actual, Is.EqualTo(expected));
     }
-
-    [TestCase("-1,2")]
-    [TestCase("-1,2,-3")]
-    [TestCase("-2")]
-    [TestCase("//;\n-3;2;-1")]
-    public void Add_NegativeNumbers_ThrowException(string numbers)
-    {
-      var sut = GetObject();
-      Assert.Throws<InvalidOperationException>(() => sut.Add(numbers));
-    }
-
 
     [TestCase("-1,2", "-1")]
     [TestCase("-1,2,-3", "-1,-3")]
